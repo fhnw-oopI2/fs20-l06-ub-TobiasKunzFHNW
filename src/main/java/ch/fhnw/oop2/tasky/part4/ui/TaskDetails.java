@@ -2,16 +2,25 @@ package ch.fhnw.oop2.tasky.part4.ui;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class TaskDetailUI extends VBox {
-	private static final int PADDING = 10;
-	private static final int WIDTH = Starter.WIDTH / 3;
-	private static final double LABEL_WIDTH = 0.20;
-	private static final double ELEMENT_WIDTH = 0.80;
+import java.util.List;
+import java.util.stream.Stream;
+
+
+public class TaskDetails extends VBox {
+	private static final int PADDING = 5;
+	private static final double LABEL_WIDTH = 120;
 
 	private TextField textFieldID, textFieldTitle;
 	private Label labelID, labelTitle, labelDesc, labelDue, labelState;
@@ -21,7 +30,7 @@ public class TaskDetailUI extends VBox {
 	private Button buttonSave, buttonDelete;
 
 
-	public TaskDetailUI() {
+	public TaskDetails() {
 		initializeControls();
 		layoutControls();
 	}
@@ -47,20 +56,27 @@ public class TaskDetailUI extends VBox {
 	}
 
 	private void layoutControls() {
-		getChildren().add(wrapInHbox(labelID, textFieldID));
-		getChildren().add(wrapInHbox(labelTitle, textFieldTitle));
-		getChildren().add(wrapInHbox(labelDesc, textAreaDesc));
-		getChildren().add(wrapInHbox(labelDue, datePickerDue));
-		getChildren().add(wrapButtons(buttonSave, buttonDelete));
+		List<Label> labels = List.of(labelID, labelTitle, labelDesc, labelDue);
+		List<Control> elements = List.of(textFieldID, textFieldTitle, textAreaDesc, datePickerDue);
 
+		Stream.iterate(0, n -> n + 1).limit(labels.size()).forEach(n -> {
+			getChildren().add(wrapInHbox(labels.get(n), elements.get(n)));
+			labels.get(n).setFont(Starter.LABEL_FONT);
+			HBox.setHgrow(elements.get(n),Priority.ALWAYS);
+			elements.get(n).setStyle("-fx-font-size: 18px");
+		});
+		//textAreaDesc.setFont(Starter.LABEL_FONT);
+		getChildren().add(wrapButtons(buttonSave, buttonDelete));
+		buttonSave.setFont(Starter.BUTTON_FONT);
+		buttonDelete.setFont(Starter.BUTTON_FONT);
+		setSpacing(10);
 	}
 
 	private HBox wrapInHbox(Label label, Control element) {
 		HBox hBox = new HBox();
-		hBox.setPadding(new Insets(PADDING));
 		hBox.getChildren().addAll(label, element);
-		label.setPrefWidth(WIDTH * LABEL_WIDTH);
-		element.setPrefWidth(WIDTH * ELEMENT_WIDTH);
+		label.setMinWidth(LABEL_WIDTH);
+		element.setMaxWidth(500);
 		return hBox;
 	}
 
