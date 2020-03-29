@@ -8,16 +8,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import java.util.List;
-
-public class TaskElementContainer extends VBox {
-	public enum Status {Todo, Doing, Done}
-
+public class TaskContainer extends VBox {
+	public enum Status {Todo, Doing, Done} //todo remove in merged project
 	private Status status;
 	private Label labelTitle;
-	private HBox container;
+	private VBox container;
 
-	public TaskElementContainer(Status status) {
+	public TaskContainer(Status status) {
 		this.status = status;
 		initializeControls();
 		layoutControls();
@@ -25,27 +22,44 @@ public class TaskElementContainer extends VBox {
 
 	private void initializeControls() {
 		labelTitle = new Label(status.name());
-		container = new HBox();
+		container = new VBox();
 	}
 
 	private void layoutControls() {
+		HBox.setHgrow(this,Priority.ALWAYS);
+		styleTitle();
+		styleContainer();
 		getChildren().addAll(labelTitle, container);
+	}
+
+	private void styleTitle(){
 		labelTitle.setPadding(new Insets(5));
 		labelTitle.setMaxWidth(Integer.MAX_VALUE);
 		labelTitle.setAlignment(Pos.TOP_CENTER);
 		labelTitle.setFont(new Font(18));
-		styleContainer();
 	}
 
 	private void styleContainer(){
 		setVgrow(container, Priority.ALWAYS);
 		setMargin(container,new Insets(10));
-		container.setSpacing(5);
-		container.setStyle("-fx-border-color: black");
+		container.setSpacing(10);
+		container.setPadding(new Insets(10));
+		container.setStyle("-fx-border-color: gray");
+		container.setStyle("-fx-border-style: dashed");
+		//container.setAlignment(Pos.TOP_CENTER);
 	}
 
+/*
 	public void setTasks(List<ch.fhnw.oop2.tasky.part4.Logic.Task> tasks) {
 		container.getChildren().removeAll();
-		tasks.forEach(t -> container.getChildren().add(new TaskElement(t)));
+		tasks.forEach(t -> container.getChildren().add(new TaskUi(t)));
 	}
+*/
+
+	public void addTask() { //todo remove
+		container.getChildren().removeAll();
+		container.getChildren().add(new TaskUi());
+		container.getChildren().add(new TaskUi());
+	}
+
 }

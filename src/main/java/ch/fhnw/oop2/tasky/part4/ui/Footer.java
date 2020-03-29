@@ -1,12 +1,10 @@
 package ch.fhnw.oop2.tasky.part4.ui;
 
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 public class Footer extends HBox {
-	private final static int HEIGHT = Starter.HEIGHT / 6;
 	private Button buttonNew, buttonRefresh;
-
 
 	public Footer() {
 		initializeControls();
@@ -24,5 +22,4 @@ public class Footer extends HBox {
 		buttonRefresh.setFont(Starter.BUTTON_FONT);
 		setSpacing(20);
 	}
-
 }
